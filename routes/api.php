@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    Route::post("/TareaCreate", [TareaController::class, "Create"])->middleware(Autenticator::class);
+    Route::post("/TareaCreate", [TareaController::class, "Create"]);
     Route::put("/TareaModificate/{d}", [TareaController::class, "Update"]);
     Route::delete("/Tarea/{d}", [TareaController::class, "Delete"]);
     Route::get("/TareaRead", [TareaController::class, "Read"]);
@@ -37,4 +37,4 @@ Route::prefix('v1')->group(function(){
     Route::get("/MyGroups/{d}", [GrupoController::class, "MyGroups"]);
     Route::get("/GruposUnidos/{d}", [GrupoController::class, "MyGroupsUnidos"]);
     Route::delete("/DeleteTiene/{d}", [GrupoController::class, "DeleteMeOnTheGroup"]);
-});
+})->middleware(Autenticator::class);

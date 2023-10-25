@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Grupo;
 use App\Models\Tiene;
+use Illuminate\Support\Facades\Http;
 
 class GrupoController extends Controller
 {
@@ -16,25 +17,34 @@ class GrupoController extends Controller
 
         $grupo -> save();
 
-        return $this->CrearTiene($grupo);
+        $tokenHeader = [ "Authorization" => $request -> header("Authorization")];
+        $response = Http::withHeaders($tokenHeader)->get(getenv("API_AUTH_URL") . "/validate");
+        $User = json_decode($response);
+
+        return $this->CrearTiene($grupo, $User);
     }
 
-    public function CrearTiene($grupo){
+    public function CrearTiene($grupo, $User){
         $tiene = new Tiene();
 
-        $tiene -> IdUser = 2;
+        $tiene -> IdUser = $User -> id;
         $tiene -> IdGrupo = $grupo -> id;
         $tiene -> Rol = 'Administrador'; 
 
         $tiene -> save();
 
-        return $grupo;
+        return $tiene;
     }
 
+
     public function CrearTieneUnirse(Request $request){
+        $tokenHeader = [ "Authorization" => $request -> header("Authorization")];
+        $response = Http::withHeaders($tokenHeader)->get(getenv("API_AUTH_URL") . "/validate");
+        $User = json_decode($response);
+        
         $tiene = new Tiene();
 
-        $tiene -> IdUser = $request -> IdUser;
+        $tiene -> IdUser = $User -> Id;
         $tiene -> IdGrupo = $request -> IdGrupo;
         $tiene -> Rol = "Usuario";
 
@@ -73,6 +83,8 @@ class GrupoController extends Controller
         return Grupo::all();
     }
 
+
+    //Ver, creo que se puede eliminar el request.
     public function MyGroups(Request $request, $idUser){
         return Grupo::join("tienes", "tienes.IdGrupo", "=", "grupos.id")
                         ->select("grupos.nombre", "grupos.id")
