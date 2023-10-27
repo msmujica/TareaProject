@@ -66,7 +66,7 @@ class GrupoController extends Controller
 
     public function Delete(Request $request, $idGrupo){
         $grupo = Grupo::findOrFail($idGrupo);
-        $grupo -> deletes();
+        $grupo -> delete();
 
         return ["message" => "Grupo Eliminado"];
     }
@@ -85,10 +85,15 @@ class GrupoController extends Controller
 
 
     //Ver, creo que se puede eliminar el request.
-    public function MyGroups(Request $request, $idUser){
+    public function MyGroups(Request $request){
+
+        $tokenHeader = [ "Authorization" => $request -> header("Authorization")];
+        $response = Http::withHeaders($tokenHeader)->get(getenv("API_AUTH_URL") . "/validate");
+        $User = json_decode($response);
+
         return Grupo::join("tienes", "tienes.IdGrupo", "=", "grupos.id")
-                        ->select("grupos.nombre", "grupos.id")
-                            ->where("tienes.IdUser", "=", $idUser,)
+                        ->select("grupos.id", "grupos.nombre", "grupos.descripcion")
+                            ->where("tienes.IdUser", "=", $User->id,)
                                 ->where("tienes.Rol", "=", "Administrador")
                                     ->get();
     }

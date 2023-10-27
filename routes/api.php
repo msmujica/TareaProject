@@ -31,10 +31,10 @@ Route::prefix('v1')->group(function(){
 
     Route::post("/GrupoCreate", [GrupoController::class, "Create"]);
     Route::post("/Unirse", [GrupoController::class, "CrearTieneUnirse"]);
-    Route::put("/GrupoModificate/{d}", [GrupoController::class, "Update"]);
+    Route::put("/GrupoUpdate/{d}", [GrupoController::class, "Update"]);
     Route::delete("/Grupo/{d}", [GrupoController::class, "Delete"]);
     Route::get("/GrupoRead/{d}", [GrupoController::class, "Read"]);
-    Route::get("/MyGroups/{d}", [GrupoController::class, "MyGroups"]);
+    Route::get("/MyGroups", [GrupoController::class, "MyGroups"])->middleware(Autenticator::class);
     Route::get("/GruposUnidos/{d}", [GrupoController::class, "MyGroupsUnidos"]);
     Route::delete("/DeleteTiene/{d}", [GrupoController::class, "DeleteMeOnTheGroup"]);
-})->middleware(Autenticator::class);
+});

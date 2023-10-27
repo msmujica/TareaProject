@@ -20,7 +20,7 @@ class CreateTareasTable extends Migration
             $table->date("FechaEntrega");
             $table->integer("IdGrupo");
             $table->timestamps();
-            $table->SoftDeletes();
+            $table->softDeletes();
         });
     }
 

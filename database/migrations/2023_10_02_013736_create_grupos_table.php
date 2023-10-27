@@ -18,7 +18,7 @@ class CreateGruposTable extends Migration
             $table->string("Nombre");
             $table->string("Descripcion");
             $table->timestamps();
-            $table->SoftDeletes();
+            $table->softDeletes();
         });
     }
 
