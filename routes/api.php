@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    Route::post("/TareaCreate", [TareaController::class, "Create"]);
+    Route::post("/TareaCreate", [TareaController::class, "Create"])->middleware(Autenticator::class);
     Route::put("/TareaModificate/{d}", [TareaController::class, "Update"]);
     Route::delete("/Tarea/{d}", [TareaController::class, "Delete"]);
     Route::get("/TareaRead", [TareaController::class, "Read"]);

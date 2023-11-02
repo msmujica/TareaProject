@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class Autenticator
 {
@@ -17,14 +18,21 @@ class Autenticator
      */
     public function handle(Request $request, Closure $next)
     {
-        $tokenHeader = [ "Authorization" => $request -> header("Authorization")];
+        $token = explode(" ", $request -> header("Authorization"))[1];
+        if(Cache::has($token)){
+            return $next($request);
+        }
 
+        $tokenHeader = [ "Authorization" => $request -> header("Authorization")];
         $response = Http::withHeaders($tokenHeader)->get(getenv("API_AUTH_URL") . "/validate");
 
-        
-        if($response -> successful())
-            return $next($request);
-        
+
+        if($response -> successful()){
+            Cache::put($token , $response -> json(), 5000);
+            return $next($request, $response);
+        }
+
         return response(['message' => 'Not Allowed'], 403);
+
     }
 }
