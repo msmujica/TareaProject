@@ -29,7 +29,7 @@ Route::prefix('v1')->group(function(){
     Route::get("/TareaReadOne/{d}", [TareaController::class, "ReadOne"]);
     Route::get("/TareaReadForGroup/{d}", [TareaController::class, "ReadForGroup"]);
 
-    Route::post("/GrupoCreate", [GrupoController::class, "Create"]);
+    Route::post("/GrupoCreate", [GrupoController::class, "Create"])->middleware(Autenticator::class);
     Route::post("/Unirse", [GrupoController::class, "CrearTieneUnirse"]);
     Route::put("/GrupoUpdate/{d}", [GrupoController::class, "Update"]);
     Route::delete("/Grupo/{d}", [GrupoController::class, "Delete"]);

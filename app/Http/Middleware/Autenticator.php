@@ -29,7 +29,7 @@ class Autenticator
 
         if($response -> successful()){
             Cache::put($token , $response -> json(), 5000);
-            return $next($request, $response);
+            return $next($request);
         }
 
         return response(['message' => 'Not Allowed'], 403);

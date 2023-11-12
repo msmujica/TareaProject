@@ -6,7 +6,7 @@ use App\Models\Tarea;
 
 class TareaController extends Controller
 {
-    public function Create(Request $request, $UserId){
+    public function Create(Request $request){
         $tarea = new Tarea();
 
         $tarea -> Nombre = $request -> Nombre;
