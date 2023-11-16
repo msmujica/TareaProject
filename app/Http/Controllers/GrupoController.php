@@ -17,8 +17,8 @@ class GrupoController extends Controller
 
         $grupo -> save();
 
-        $encode = json_encode(Cache::get(explode(" ", $request -> header("Authorization"))[1]));
-        $UserData = json_decode($encode);
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+        
 
         return $this->CrearTiene($grupo, $UserData);
     }
@@ -26,7 +26,7 @@ class GrupoController extends Controller
     public function CrearTiene($grupo, $UserData){
         $tiene = new Tiene();
 
-        $tiene -> IdUser = $UserData -> id;
+        $tiene -> IdUser = $UserData['id'];
         $tiene -> IdGrupo = $grupo -> id;
         $tiene -> Rol = 'Administrador'; 
 
@@ -35,14 +35,12 @@ class GrupoController extends Controller
         return $tiene;
     }
 
-
     public function CrearTieneUnirse(Request $request){
-        $encode = json_encode(Cache::get(explode(" ", $request -> header("Authorization"))[1]));
-        $UserData = json_decode($encode);
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
         
         $tiene = new Tiene();
 
-        $tiene -> IdUser = $User -> Id;
+        $tiene -> IdUser = $UserData['id'];
         $tiene -> IdGrupo = $request -> IdGrupo;
         $tiene -> Rol = "Usuario";
 
@@ -81,26 +79,22 @@ class GrupoController extends Controller
         return Grupo::all();
     }
 
-
-    //Ver, creo que se puede eliminar el request.
     public function MyGroups(Request $request){
-
-        $encode = json_encode(Cache::get(explode(" ", $request -> header("Authorization"))[1]));
-        $UserData = json_decode($encode);
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
 
         return Grupo::join("tienes", "tienes.IdGrupo", "=", "grupos.id")
                         ->select("grupos.id", "grupos.nombre", "grupos.descripcion")
-                            ->where("tienes.IdUser", "=", $UserData->id,)
+                            ->where("tienes.IdUser", "=", $UserData['id'],)
                                 ->where("tienes.Rol", "=", "Administrador")
                                     ->get();
     }
 
     public function MyGroupsUnidos(Request $request){
-        $encode = json_encode(Cache::get(explode(" ", $request -> header("Authorization"))[1]));
-        $UserData = json_decode($encode);
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+
         return Grupo::join("tienes", "tienes.IdGrupo", "=", "grupos.id")
                         ->select("*")
-                            ->where("tienes.IdUser", "=", $UserData->id,)
+                            ->where("tienes.IdUser", "=", $UserData['id'],)
                                 ->where("tienes.Rol", "=", "Usuario")
                                     ->get();
     }
