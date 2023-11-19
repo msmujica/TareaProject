@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Grupo;
 use App\Models\Tiene;
+use App\Jobs\JobEmails;
 use Illuminate\Support\Facades\Cache;
 
 class GrupoController extends Controller
@@ -18,8 +19,7 @@ class GrupoController extends Controller
         $grupo -> save();
 
         $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
-        
-
+    
         return $this->CrearTiene($grupo, $UserData);
     }
 
@@ -32,7 +32,19 @@ class GrupoController extends Controller
 
         $tiene -> save();
 
-        return $tiene;
+        return $this->Send($UserData);
+    }
+
+    public function Send($UserData){
+        
+        $emailJob = new JobEmails(
+            'System@tareasya.com',
+            $UserData['email'],
+            'Grupo Creado'
+        );
+        
+        $this->dispatch($emailJob);
+        return [ 'status' => 'success'];
     }
 
     public function CrearTieneUnirse(Request $request){

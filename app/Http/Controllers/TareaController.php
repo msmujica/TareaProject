@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
+use App\Jobs\JobEmails;
 use App\Models\Tarea;
 
 class TareaController extends Controller
@@ -16,7 +18,21 @@ class TareaController extends Controller
 
         $tarea -> save();
 
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+
         return $tarea;
+    }
+
+    public function Send($UserData){
+        
+        $emailJob = new JobEmails(
+            'System@tareasya.com',
+            $UserData['email'],
+            'Grupo Creado'
+        );
+        
+        $this->dispatch($emailJob);
+        return [ 'status' => 'success'];
     }
 
     public function Update(Request $request, $IdTarea){
@@ -50,4 +66,6 @@ class TareaController extends Controller
     public function ReadForGroup(Request $request, $IdGrupo){
         return Tarea::where("IdGrupo", "=", $IdGrupo)->get();
     }
+
+    
 }
