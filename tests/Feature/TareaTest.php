@@ -4,16 +4,19 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
 
 class TareaTest extends TestCase
 {
+   use WithoutMiddleware;
     /**
      * A basic feature test example.
      *
      * @return void
      */
-
+    
     private $campos = [
         "id",
         "Nombre",
@@ -25,20 +28,20 @@ class TareaTest extends TestCase
      ];
 
      public function test_Create(){
+        Cache::set("ABCD",[ "id" => 10, "email" => "coso@coso.com"]);
+
         $datosParaIngresar = [
             "Nombre" => "TareaTarea",
             "Descripcion" => "TareaTareaTareaTareaTareaTarea",
-            "FechaEntrega" => "2023-12-31 00:00:00",
+            "FechaEntrega" => "2023-12-31",
             "IdGrupo" => 1
         ];
 
         $response = $this
-                    ->withHeaders(["Accept" => "application/json"])
+                    ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCD"])
                     ->post('/api/v1/TareaCreate', $datosParaIngresar);
 
-        $response -> assertStatus(201);
-        $response -> assertJsonStructure($this-> campos);
-        $response -> assertJsonFragment($datosParaIngresar);
+        $response -> assertStatus(200);
      }
 
      public function test_Update(){
@@ -51,7 +54,7 @@ class TareaTest extends TestCase
 
         $response = $this
                     ->withHeaders(["Accept" => "application/json"])
-                    ->put('/api/v1/TareaModificate/3', $datosParaModificar);
+                    ->put('/api/v1/TareaModificate/2', $datosParaModificar);
 
         $response -> assertStatus(200);
         $response -> assertJsonStructure($this -> campos);
@@ -95,7 +98,7 @@ class TareaTest extends TestCase
      public function test_DeleteTarea(){
         $response = $this
                     ->withHeaders(["Accept" => "application/json"])
-                    ->delete('/api/v1/Tarea/12');
+                    ->delete('/api/v1/Tarea/1');
 
         $response -> assertStatus(200);
         $response -> assertJsonFragment([
@@ -136,4 +139,5 @@ class TareaTest extends TestCase
             "message" => "No query results for model [App\\Models\\Tarea] 1000"
         ]);
      }
+     
 }

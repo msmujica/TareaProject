@@ -18,9 +18,8 @@ class TareaController extends Controller
 
         $tarea -> save();
 
-        //$UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
-        //return $this->Send($UserData);
-        return $tarea;
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+        return $this->Send($UserData);
     }
 
     public function Send($UserData){
