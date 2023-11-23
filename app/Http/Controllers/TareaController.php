@@ -18,8 +18,8 @@ class TareaController extends Controller
 
         $tarea -> save();
 
-        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
-
+        //$UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+        //return $this->Send($UserData);
         return $tarea;
     }
 
@@ -28,11 +28,15 @@ class TareaController extends Controller
         $emailJob = new JobEmails(
             'System@tareasya.com',
             $UserData['email'],
-            'Grupo Creado'
+            'Tarea Creada'
         );
         
         $this->dispatch($emailJob);
         return [ 'status' => 'success'];
+    }
+
+    public function UserData(Request $request){
+        return Cache::get(explode(" ", $request -> header("Authorization"))[1]);
     }
 
     public function Update(Request $request, $IdTarea){

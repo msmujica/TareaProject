@@ -35,6 +35,10 @@ class GrupoController extends Controller
         return $this->Send($UserData);
     }
 
+    public function UserData(Request $request){
+        
+    }
+
     public function Send($UserData){
         
         $emailJob = new JobEmails(
