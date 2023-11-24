@@ -54,7 +54,7 @@ class TareaTest extends TestCase
 
         $response = $this
                     ->withHeaders(["Accept" => "application/json"])
-                    ->put('/api/v1/TareaModificate/2', $datosParaModificar);
+                    ->put('/api/v1/TareaModificate/4', $datosParaModificar);
 
         $response -> assertStatus(200);
         $response -> assertJsonStructure($this -> campos);
@@ -76,7 +76,7 @@ class TareaTest extends TestCase
      public function test_ReadOne(){
         $response = $this
                     ->withHeaders(["Accept" => "application/json"])
-                    ->get('/api/v1/TareaReadOne/2');
+                    ->get('/api/v1/TareaReadOne/4');
         
         $response -> assertStatus(200);
         $response -> assertJsonStructure(

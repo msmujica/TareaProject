@@ -48,7 +48,7 @@ class GrupoTest extends TestCase
       
       $response = $this
       ->withHeaders(["Accept" => "application/json"])
-      ->put('/api/v1/GrupoUpdate/2', $datosParaModificar);
+      ->put('/api/v1/GrupoUpdate/4', $datosParaModificar);
       
       $response -> assertStatus(200);
       $response -> assertJsonStructure($this -> campos);
