@@ -35,10 +35,6 @@ class GrupoController extends Controller
         return $this->Send($UserData);
     }
 
-    public function UserData(Request $request){
-        
-    }
-
     public function Send($UserData){
         
         $emailJob = new JobEmails(
@@ -113,5 +109,12 @@ class GrupoController extends Controller
                             ->where("tienes.IdUser", "=", $UserData['id'],)
                                 ->where("tienes.Rol", "=", "Usuario")
                                     ->get();
+    }
+
+    public function UsersData(Request $request, $idGrupo){
+        $UserData = Cache::get(explode(" ", $request -> header("Authorization"))[1]);
+
+        return Tiene::where("tienes.IdUser", "=", $UserData['id'])
+                        ->where("tienes.IdGrupo", "=", $idGrupo)->get();
     }
 }
