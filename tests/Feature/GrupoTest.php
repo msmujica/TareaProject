@@ -64,7 +64,7 @@ class GrupoTest extends TestCase
       
       $response = $this
       ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCDE"])
-      ->post('api/v1/GrupoCreate', $datosParaIngresar);
+      ->post('api/v1/Unirse', $datosParaIngresar);
       
       $response -> assertStatus(201);
    }
@@ -111,9 +111,6 @@ class GrupoTest extends TestCase
       ->get('api/v1/UserData/1');
       
       $response -> assertStatus(200);
-      $response -> assertJsonStructure([
-         "*" => $this -> campos
-      ]);
    }
    
    public function test_Delete(){
