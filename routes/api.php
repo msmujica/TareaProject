@@ -40,5 +40,6 @@ Route::prefix('v1')->group(function(){
     Route::delete("/DeleteTiene/{d}", [GrupoController::class, "DeleteMeOnTheGroup"])->middleware(Autenticator::class);
 
     Route::post('/enviar',[MailController::class,'Send'])->middleware(Autenticator::class);
+    Route::post('/SendHelp',[MailController::class,'SendHelp'])->middleware(Autenticator::class);
     Route::get('/UserData/{d}',[GrupoController::class,'UsersData'])->middleware(Autenticator::class);
 });

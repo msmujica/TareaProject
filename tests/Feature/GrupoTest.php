@@ -54,6 +54,20 @@ class GrupoTest extends TestCase
       $response -> assertJsonStructure($this -> campos);
       $response -> assertJsonFragment($datosParaModificar);
    }
+
+   public function test_CrearTieneUnirse(){
+      Cache::set("ABCDE",[ "id" => 11, "email" => "coso2@coso2.com"]);
+
+      $datosParaIngresar = [
+         'IdGrupo' => 1
+      ];
+      
+      $response = $this
+      ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCDE"])
+      ->post('api/v1/GrupoCreate', $datosParaIngresar);
+      
+      $response -> assertStatus(201);
+   }
    
    public function test_Read(){
       $response = $this
@@ -83,6 +97,18 @@ class GrupoTest extends TestCase
       $response = $this
       ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCD"])
       ->get('api/v1/GrupoRead');
+      
+      $response -> assertStatus(200);
+      $response -> assertJsonStructure([
+         "*" => $this -> campos
+      ]);
+   }
+
+   public function test_UsersData(){
+      Cache::set("ABCD",[ "id" => 10, "email" => "coso@coso.com"]);
+      $response = $this
+      ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCD"])
+      ->get('api/v1/UserData/1');
       
       $response -> assertStatus(200);
       $response -> assertJsonStructure([

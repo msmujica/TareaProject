@@ -97,7 +97,6 @@ class GrupoController extends Controller
         return Grupo::join("tienes", "tienes.IdGrupo", "=", "grupos.id")
                         ->select("grupos.id", "grupos.nombre", "grupos.descripcion")
                             ->where("tienes.IdUser", "=", $UserData['id'],)
-                                ->where("tienes.Rol", "=", "Administrador")
                                     ->get();
     }
 
