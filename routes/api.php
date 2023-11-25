@@ -24,21 +24,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('v1')->group(function(){
     Route::post("/TareaCreate", [TareaController::class, "Create"])->middleware(Autenticator::class);
-    Route::put("/TareaModificate/{d}", [TareaController::class, "Update"]);
-    Route::delete("/Tarea/{d}", [TareaController::class, "Delete"]);
+    Route::put("/TareaModificate/{d}", [TareaController::class, "Update"])->middleware(Autenticator::class);
+    Route::delete("/Tarea/{d}", [TareaController::class, "Delete"])->middleware(Autenticator::class);
     Route::get("/TareaRead", [TareaController::class, "Read"])->middleware(Autenticator::class);
     Route::get("/TareaReadOne/{d}", [TareaController::class, "ReadOne"])->middleware(Autenticator::class);
     Route::get("/TareaReadForGroup/{d}", [TareaController::class, "ReadForGroup"])->middleware(Autenticator::class);
 
     Route::post("/GrupoCreate", [GrupoController::class, "Create"])->middleware(Autenticator::class);
-    Route::post("/Unirse", [GrupoController::class, "CrearTieneUnirse"]);
-    Route::put("/GrupoUpdate/{d}", [GrupoController::class, "Update"]);
-    Route::delete("/Grupo/{d}", [GrupoController::class, "Delete"]);
-    Route::get("/GrupoRead", [GrupoController::class, "Read"]);
+    Route::post("/Unirse", [GrupoController::class, "CrearTieneUnirse"])->middleware(Autenticator::class);
+    Route::put("/GrupoUpdate/{d}", [GrupoController::class, "Update"])->middleware(Autenticator::class);
+    Route::delete("/Grupo/{d}", [GrupoController::class, "Delete"])->middleware(Autenticator::class);
+    Route::get("/GrupoRead", [GrupoController::class, "Read"])->middleware(Autenticator::class);
     Route::get("/MyGroups", [GrupoController::class, "MyGroups"])->middleware(Autenticator::class);
-    Route::get("/GruposUnidos/{d}", [GrupoController::class, "MyGroupsUnidos"]);
-    Route::delete("/DeleteTiene/{d}", [GrupoController::class, "DeleteMeOnTheGroup"]);
+    Route::get("/GruposUnidos/{d}", [GrupoController::class, "MyGroupsUnidos"])->middleware(Autenticator::class);
+    Route::delete("/DeleteTiene/{d}", [GrupoController::class, "DeleteMeOnTheGroup"])->middleware(Autenticator::class);
 
-    Route::post('/enviar',[MailController::class,'Send']);
-    Route::post('/UserData',[TareaController::class,'UserData'])->middleware(Autenticator::class);
+    Route::post('/enviar',[MailController::class,'Send'])->middleware(Autenticator::class);
+    Route::post('/SendHelp',[MailController::class,'SendHelp'])->middleware(Autenticator::class);
+    Route::get('/UserData/{d}',[GrupoController::class,'UsersData'])->middleware(Autenticator::class);
 });

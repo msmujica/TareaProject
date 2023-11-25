@@ -34,10 +34,6 @@ class TareaController extends Controller
         return [ 'status' => 'success'];
     }
 
-    public function UserData(Request $request){
-        return Cache::get(explode(" ", $request -> header("Authorization"))[1]);
-    }
-
     public function Update(Request $request, $IdTarea){
         $tarea = Tarea::findOrFail($IdTarea);
 
