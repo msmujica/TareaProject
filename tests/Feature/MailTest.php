@@ -39,7 +39,7 @@ class MailTest extends TestCase
 
          $response = $this
         ->withHeaders(["Accept" => "application/json", "Authorization" => "Bearer ABCD"])
-        ->post('api/v1/GrupoCreate', $datosParaIngresar);
+        ->post('api/v1/SendHelp', $datosParaIngresar);
       
         $response -> assertStatus(200);
      }
