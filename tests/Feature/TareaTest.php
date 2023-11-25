@@ -139,5 +139,4 @@ class TareaTest extends TestCase
             "message" => "No query results for model [App\\Models\\Tarea] 1000"
         ]);
      }
-     
 }
